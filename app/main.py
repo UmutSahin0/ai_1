@@ -45,10 +45,10 @@ def main():
             break
 
         # Modelden cevap al - Bu kısım çıkartıldı. Çünkü history tutma eklendi. Bu şekilde invoke yapılınca tutulmuyordu.
-        response = model.invoke([HumanMessage(content=str(user_message))])
+        #response = model.invoke([HumanMessage(content=str(user_message))])
 
         # Kullanıcıdan gelen mesajları zincire gönder
-        #response = conversation.predict(input=user_message)
+        response = conversation.predict(input=user_message)
         print("Chatbot:", response)
 
 
