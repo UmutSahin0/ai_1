@@ -15,6 +15,8 @@ from langchain.globals import set_llm_cache
 
 from langchain.agents import initialize_agent, AgentType
 from tool import tool_get_system_time
+from langchain_community.tools import DuckDuckGoSearchRun
+
 
 
 
@@ -35,9 +37,9 @@ def main():
 
     # Memory oluştur (sadece konuşma geçmişi saklar)
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
+    search = DuckDuckGoSearchRun()
     # 🛠️ Araçları tanımla
-    tools = [tool_get_system_time]
+    tools = [tool_get_system_time,search]
 
 
     # 🧠 Agent başlat
