@@ -11,6 +11,8 @@ from langchain.chains import ConversationChain
 #for cache
 from langchain.cache import InMemoryCache
 from langchain.globals import set_llm_cache
+from langchain.cache import SQLiteCache
+
 
 
 from langchain.agents import initialize_agent, AgentType
@@ -18,17 +20,32 @@ from tool import tool_get_system_time
 from langchain_community.tools import DuckDuckGoSearchRun
 
 
+from langchain.cache import SQLiteCache
 
-
-
-class DebugInMemoryCache(InMemoryCache):
+class DebugSQLiteCache(SQLiteCache):
     def lookup(self, prompt: str, llm_string: str):
         result = super().lookup(prompt, llm_string)
-        if result:
-            print("✅ Cevap CACHE aracılığı ile üretildi.")
+        if result is None:
+            print("❌ Cache MISS")
         else:
-            print("❌ Cevap CACHE aracılığı ile üretilmedi. ")
+            print("✅ Cache HIT")
         return result
+
+    def update(self, prompt: str, llm_string: str, response):
+        print("💾 Storing result in cache")
+        return super().update(prompt, llm_string, response)
+
+
+
+# Şu anda kapatıldı. Çünkü InMemoryCache yerine SQLiteCache yapısına geçildi.
+# class DebugInMemoryCache(InMemoryCache):
+#     def lookup(self, prompt: str, llm_string: str):
+#         result = super().lookup(prompt, llm_string)
+#         if result:
+#             print("✅ Cevap CACHE aracılığı ile üretildi.")
+#         else:
+#             print("❌ Cevap CACHE aracılığı ile üretilmedi. ")
+#         return result
 
 
 def main():
@@ -80,6 +97,7 @@ if __name__ == '__main__':
     groq_api_key = os.getenv("GROQ_API_KEY")
     
     # 🔁 CACHE yapılandırması
-    set_llm_cache(DebugInMemoryCache())
+    #set_llm_cache(DebugInMemoryCache())  Kalıcı cache'e geçildiği için şu anda iptal edildi.
+    set_llm_cache(DebugSQLiteCache(database_path="../cache/.langchain_cache.db"))
 
     main()

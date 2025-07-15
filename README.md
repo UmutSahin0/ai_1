@@ -8,15 +8,15 @@
 - LLM’in her düşünce ve aksiyon adımı loglanır
 - Kullanıcı geçmişi (chat history) Redis’te tutulur
 - Kullanıcı için farklı sohbetler açılıp devam ettirilebilir.
-- Aynı soru tekrar sorulursa cevap cache’den döner
+- Aynı soru tekrar sorulursa cevap cache’den (SQLiteCache) döner
 
 ### 💾 Teknik Detaylar:
 
 | Katman | Açıklama |
 | --- | --- |
 | **Memory** | `ConversationBufferMemory` + Redis backend (LangChain'de desteklenir) |
-| **Cache** | LangChain cache + Redis (önbellekten aynı cevabı verir) |
+| **Cache** |  SQLiteCache (önbellekten aynı cevabı verir) |
 | **History** | Kullanıcıya ait geçmiş konuşmalar Redis'te saklanır, LLM prompt’una eklenir |
-| **Tool** | SerpAPI / Google custom search |
+| **Tool** | tool_get_system_time / DuckDuckGoSearchRun |
 | **Output** | Markdown veya HTML olarak kaynaklı yanıt döner |
 
