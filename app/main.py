@@ -12,13 +12,20 @@ from langchain.chains import ConversationChain
 from langchain.cache import InMemoryCache
 from langchain.globals import set_llm_cache
 
+
+from langchain.agents import initialize_agent, AgentType
+from tool import tool_get_system_time
+
+
+
+
 class DebugInMemoryCache(InMemoryCache):
     def lookup(self, prompt: str, llm_string: str):
         result = super().lookup(prompt, llm_string)
         if result:
             print("✅ Cevap CACHE aracılığı ile üretildi.")
         else:
-            print("❌ Cevap LLM aracılığı ile üretildi. ")
+            print("❌ Cevap CACHE aracılığı ile üretilmedi. ")
         return result
 
 
@@ -27,13 +34,19 @@ def main():
     model = init_chat_model("llama3-8b-8192", model_provider="groq")
 
     # Memory oluştur (sadece konuşma geçmişi saklar)
-    memory = ConversationBufferMemory()
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
-    # Konuşma zinciri oluştur
-    conversation = ConversationChain(
+    # 🛠️ Araçları tanımla
+    tools = [tool_get_system_time]
+
+
+    # 🧠 Agent başlat
+    agent = initialize_agent(
+        tools=tools,
         llm=model,
         memory=memory,
-        verbose = True
+        agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION  ,
+        verbose=True,
     )
 
     while True:
@@ -48,7 +61,7 @@ def main():
         #response = model.invoke([HumanMessage(content=str(user_message))])
 
         # Kullanıcıdan gelen mesajları zincire gönder
-        response = conversation.predict(input=user_message)
+        response = agent.run(input=user_message)
         print("Chatbot:", response)
 
 
