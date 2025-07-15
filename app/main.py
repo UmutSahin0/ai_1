@@ -2,17 +2,22 @@ from langchain.schema import HumanMessage
 from dotenv import load_dotenv
 import os
 from langchain.chat_models import init_chat_model
-
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationChain
 
 
 def main():
-
-    # API key'i oku
-    groq_api_key = os.getenv("GROQ_API_KEY")
-
     # ChatGroq modelini başlat
     model = init_chat_model("llama3-8b-8192", model_provider="groq")
 
+    # Memory oluştur (sadece konuşma geçmişi saklar)
+    memory = ConversationBufferMemory()
+
+    # Konuşma zinciri oluştur
+    conversation = ConversationChain(
+        llm=model,
+        memory=memory
+    )
 
     while True:
 
@@ -22,10 +27,12 @@ def main():
         if user_message == 'çık':
             break
 
-        # Modelden cevap al
-        response = model.invoke([HumanMessage(content=str(user_message))])
+        # Modelden cevap al - Bu kısım çıkartıldı. Çünkü history tutma eklendi. Bu şekilde invoke yapılınca tutulmuyordu.
+        #response = model.invoke([HumanMessage(content=str(user_message))])
 
-        print("Chatbot:", response.content)
+        # Kullanıcıdan gelen mesajları zincire gönder
+        response = conversation.predict(input=user_message)
+        print("Chatbot:", response)
 
 
 
@@ -36,5 +43,9 @@ if __name__ == '__main__':
 
     # .env'den değişkenleri yükle
     load_dotenv()
+
+    # API key'i oku
+    groq_api_key = os.getenv("GROQ_API_KEY")
+    
 
     main()
