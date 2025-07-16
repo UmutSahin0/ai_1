@@ -7,6 +7,7 @@ from langchain.chat_models import init_chat_model
 # for conversation history
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
+from langchain.memory.chat_message_histories import RedisChatMessageHistory
 
 #for cache
 from langchain.cache import InMemoryCache
@@ -52,10 +53,17 @@ def main():
     # ChatGroq modelini başlat
     model = init_chat_model("llama3-8b-8192", model_provider="groq")
 
+    #Redis ile history tutmak için
+    history = RedisChatMessageHistory(
+    url="redis://localhost:6379",
+    session_id="chat-1"
+    )
+
     # Memory oluştur (sadece konuşma geçmişi saklar)
-    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    memory = ConversationBufferMemory(memory_key="chat_history", chat_memory=history , return_messages=True)
     search = DuckDuckGoSearchRun()
-    # 🛠️ Araçları tanımla
+    
+    # 🛠️ Araçları tanımla   
     tools = [tool_get_system_time,search]
 
 
