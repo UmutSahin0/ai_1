@@ -1,0 +1,6 @@
+langchain
+langchain-groq
+python-dotenv
+duckduckgo-search
+redis
+langchain_community

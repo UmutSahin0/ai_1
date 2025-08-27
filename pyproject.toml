@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "akilli_arastirma_asistani"
+version = "2.1.0"
+description = "Akıllı Araştırma Asistanı - an LLM agent chatbot with tool support"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+  {name = "Umut Şahin", email = "umut.sahinn.57@gmail.com"}
+]
+
+dependencies = [
+  "langchain",
+  "langchain-groq",
+  "python-dotenv",
+  "duckduckgo-search",
+  "redis",
+  "langchain_community"
+]
+
+[tool.setuptools.packages.find]
+where = ["app"]
+
+[tool.setuptools]
+package-dir = {"" = "app"}

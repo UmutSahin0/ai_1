@@ -1,0 +1,7 @@
+README.md
+pyproject.toml
+app/akilli_arastirma_asistani.egg-info/PKG-INFO
+app/akilli_arastirma_asistani.egg-info/SOURCES.txt
+app/akilli_arastirma_asistani.egg-info/dependency_links.txt
+app/akilli_arastirma_asistani.egg-info/requires.txt
+app/akilli_arastirma_asistani.egg-info/top_level.txt

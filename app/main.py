@@ -7,12 +7,16 @@ from langchain.chat_models import init_chat_model
 # for conversation history
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
-from langchain.memory.chat_message_histories import RedisChatMessageHistory
+#from langchain.memory.chat_message_histories import RedisChatMessageHistory
+from langchain_community.chat_message_histories import RedisChatMessageHistory
+
 
 #for cache
-from langchain.cache import InMemoryCache
+#from langchain.cache import InMemoryCache
 from langchain.globals import set_llm_cache
-from langchain.cache import SQLiteCache
+#from langchain.cache import SQLiteCache
+from langchain_community.cache import SQLiteCache
+
 
 
 
@@ -22,6 +26,8 @@ from langchain_community.tools import DuckDuckGoSearchRun
 
 
 from langchain.cache import SQLiteCache
+
+from typing import Any, Optional
 
 class DebugSQLiteCache(SQLiteCache):
     def lookup(self, prompt: str, llm_string: str):
@@ -35,7 +41,7 @@ class DebugSQLiteCache(SQLiteCache):
     def update(self, prompt: str, llm_string: str, response):
         print("💾 Storing result in cache")
         return super().update(prompt, llm_string, response)
-
+    
 
 
 # Şu anda kapatıldı. Çünkü InMemoryCache yerine SQLiteCache yapısına geçildi.
@@ -106,6 +112,6 @@ if __name__ == '__main__':
     
     # 🔁 CACHE yapılandırması
     #set_llm_cache(DebugInMemoryCache())  Kalıcı cache'e geçildiği için şu anda iptal edildi.
-    set_llm_cache(DebugSQLiteCache(database_path="../cache/.langchain_cache.db"))
+    set_llm_cache(DebugSQLiteCache(database_path="cache/.langchain_cache.db"))
 
     main()

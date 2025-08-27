@@ -1,3 +1,18 @@
+Metadata-Version: 2.4
+Name: akilli_arastirma_asistani
+Version: 2.1.0
+Summary: Akıllı Araştırma Asistanı - an LLM agent chatbot with tool support
+Author-email: Umut Şahin <umut.sahinn.57@gmail.com>
+License: MIT
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: langchain
+Requires-Dist: langchain-groq
+Requires-Dist: python-dotenv
+Requires-Dist: duckduckgo-search
+Requires-Dist: redis
+Requires-Dist: langchain_community
+
 ## 1. **Akıllı Araştırma Asistanı (Research Agent)**
 
 ### 🧠 ReAct + Tool + Memory + Redis
